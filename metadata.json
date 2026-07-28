@@ -1,0 +1,6 @@
+{
+  "name": "Німецькі Картки - DeutschCards",
+  "description": "Мінімалістичний сайт у стилі Google Gemini для вивчення німецьких слів з картками, режимами граматики та відстеженням прогресу",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
