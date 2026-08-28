@@ -19,9 +19,7 @@ import {
   BookOpen,
   Plus,
 } from "lucide-react";
-import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
-import { useDecks } from "../hooks/useDecks";
-import { useStudySession } from "../hooks/useStudySession";
+import { useKeyboardShortcuts, useDecks, useStudySession } from "../hooks";
 
 interface HomePageProps {
   isDarkMode: boolean;
@@ -39,12 +37,6 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
   const [isStatsOpen, setIsStatsOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Toast Helper
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
-  };
-
   const {
     decks,
     activeDeck,
@@ -58,7 +50,7 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
     setProgressMap,
     handleImportFile,
     handleResetProgress,
-  } = useDecks({ uiLanguage, showToast });
+  } = useDecks({ uiLanguage, onDeckReset: () => setCurrentCardIndex(0) });
 
   const {
     currentCards,
@@ -77,7 +69,6 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
     progressMap,
     uiLanguage,
     setProgressMap,
-    showToast,
   });
 
   // Set card stack when active deck changes

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useToast } from "../hooks";
 import { Deck, CardProgress } from "../types";
 import {
   getStoredDecks,
@@ -13,15 +14,10 @@ import { Language, getTranslation } from "../utils/translations";
 
 interface DecksProps {
   uiLanguage: Language;
-  showToast: (msg: string) => void;
   onDeckReset?: () => void;
 }
 
-export const useDecks = ({
-  uiLanguage,
-  showToast,
-  onDeckReset,
-}: DecksProps) => {
+export const useDecks = ({ uiLanguage, onDeckReset }: DecksProps) => {
   // Main state
   const [decks, setDecks] = useState<Deck[]>(getStoredDecks);
   const [activeDeckId, setActiveDeckId] = useState<string>(() => {
@@ -31,6 +27,8 @@ export const useDecks = ({
   const [pinnedIds, setPinnedIds] = useState<string[]>(getStoredPinned);
   const [progressMap, setProgressMap] =
     useState<Record<string, CardProgress>>(getStoredProgress);
+
+  const { showToast } = useToast();
 
   // Active Deck object
   const activeDeck = decks.find((d) => d.id === activeDeckId) || decks[0];

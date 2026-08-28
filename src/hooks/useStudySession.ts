@@ -1,4 +1,5 @@
 import { useState, useCallback, Dispatch, SetStateAction } from "react";
+import { useToast } from "../hooks";
 import { saveCardProgress } from "../utils/storage";
 import { Deck, Flashcard, StudyMode, CardProgress } from "../types";
 import { Language, getTranslation } from "../utils/translations";
@@ -9,8 +10,6 @@ interface StudySessionProps {
   progressMap: Record<string, CardProgress>;
   uiLanguage: Language;
   setProgressMap: Dispatch<SetStateAction<Record<string, CardProgress>>>;
-  showToast: (msg: string) => void;
-  // saveCardProgress: () => void;
 }
 
 export const useStudySession = ({
@@ -18,12 +17,13 @@ export const useStudySession = ({
   progressMap,
   uiLanguage,
   setProgressMap,
-  showToast,
 }: StudySessionProps) => {
   // Study state
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
   const [studyMode, setStudyMode] = useState<StudyMode>("classic");
   const [currentCards, setCurrentCards] = useState<Flashcard[]>([]);
+
+  const { showToast } = useToast();
 
   // Card Navigation
   const handleNextCard = useCallback(() => {
@@ -32,13 +32,6 @@ export const useStudySession = ({
     if (currentCardIndex < currentCards.length - 1) {
       setCurrentCardIndex((prev) => prev + 1);
     } else {
-      // Reached end of deck celebration
-      confetti({
-        particleCount: 80,
-        spread: 100,
-        origin: { y: 0.6 },
-      });
-      showToast("🎉");
       setCurrentCardIndex(0);
     }
   }, [currentCards, currentCardIndex]);
@@ -85,7 +78,25 @@ export const useStudySession = ({
       setProgressMap(updatedMap);
 
       if (status === "known") {
-        showToast(`${getTranslation(uiLanguage, "markedAsKnown")} 🚀`);
+        // Перевіряємо, чи ВСІ картки в деці тепер мають статус 'known'
+        const allKnown = activeDeck.cards.every((c) => {
+          const key = `${activeDeck.id}_${c.id}`;
+          return updatedMap[key]?.status === "known";
+        });
+
+        if (allKnown) {
+          // 🎉 Всі слова вивчені — запускаємо свято!
+          confetti({
+            particleCount: 100,
+            spread: 120,
+            origin: { y: 0.6 },
+          });
+          showToast(
+            `🏆 ${getTranslation(uiLanguage, "markedAsKnown")}! Все вивчено!`,
+          );
+        } else {
+          showToast(`${getTranslation(uiLanguage, "markedAsKnown")} 🚀`);
+        }
       }
     },
     [activeDeck, currentCards, currentCardIndex, progressMap, uiLanguage],
