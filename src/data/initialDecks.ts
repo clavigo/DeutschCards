@@ -7,6 +7,7 @@ export const INITIAL_DECKS: Deck[] = [
     description:
       "Die wichtigsten deutschen Verben mit den dazugehörigen Präpositionen und Fällen (A2–B1)",
     icon: "⚡",
+    type: "grammar",
     category: "Grammatik",
     isPublic: true,
     isPinned: true,
@@ -262,6 +263,7 @@ export const INITIAL_DECKS: Deck[] = [
     description:
       "Die wichtigsten Grund Nomen mit den Artikeln „der“, „die“, „das“ und der Pluralform (A1–A2)",
     icon: "📚",
+    type: "nouns",
     category: "Das Wichtigste",
     isPublic: true,
     isPinned: true,
@@ -441,6 +443,7 @@ export const INITIAL_DECKS: Deck[] = [
     description:
       "Umgangssprachliche deutsche Redewendungen für eine natürliche Kommunikation",
     icon: "💬",
+    type: "phrases",
     category: "Umgangssprache",
     isPublic: true,
     isPinned: false,
@@ -549,6 +552,7 @@ export const INITIAL_DECKS: Deck[] = [
     description:
       "Wörter für Bahnhöfe, Hotels, den Flughafen und die Orientierung in der Stadt",
     icon: "✈️",
+    type: "nouns",
     category: "Reisen",
     isPublic: true,
     isPinned: false,

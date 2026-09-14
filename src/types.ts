@@ -4,6 +4,10 @@ export type StudyMode = "classic" | "grammar" | "reverse" | "quiz";
 
 export type LocalizedField = string | Partial<Record<Language, string>>;
 
+export type CardStatus = "unseen" | "learning" | "known";
+
+export type DeckType = "basic" | "nouns" | "grammar" | "phrases";
+
 export interface Flashcard {
   id: string;
   german: string; // Німецьке слово або фраза
@@ -21,6 +25,7 @@ export interface Deck {
   id: string;
   title: string;
   description: string;
+  type?: DeckType;
   icon?: string; // Lucide icon name or emoji
   category: string; // "Загальні", "Граматика", "Мої списки" etc.
   isPublic: boolean; // Чи це загальний список для всіх
@@ -29,8 +34,6 @@ export interface Deck {
   updatedAt: number;
   cards: Flashcard[];
 }
-
-export type CardStatus = "unseen" | "learning" | "known";
 
 export interface CardProgress {
   cardId: string;

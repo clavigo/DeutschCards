@@ -1,10 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
-import {
-  saveCardProgress,
-  calculateDeckStats,
-  exportDataAsJSON,
-} from "../utils/storage";
-import { Deck, Flashcard, StudyMode, CardProgress } from "../types";
+import { useState, useEffect } from "react";
+import { calculateDeckStats, exportDataAsJSON } from "../utils/storage";
+import { Deck } from "../types";
 import { Sidebar } from "../components/Sidebar";
 import { StudyHeader } from "../components/StudyHeader";
 import { Flashcard as FlashcardComponent } from "../components/Flashcard";
@@ -204,6 +200,7 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
                 <FlashcardComponent
                   card={currentCard}
                   mode={studyMode}
+                  deckType={activeDeck.type || "basic"}
                   status={currentProgress?.status || "unseen"}
                   isStarred={currentProgress?.starred || false}
                   isDarkMode={isDarkMode}

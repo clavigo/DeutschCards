@@ -33,7 +33,7 @@ export const translations = {
   uk: {
     // General / App
     appName: "Німецька Картки",
-    appSubtitle: "Вивчення та повторення німецьких слів",
+    appSubtitle: "Вивчення німецьких слів",
     uiLanguage: "Мова інтерфейсу",
     themeDark: "Темна тема",
     themeLight: "Світла тема",
@@ -53,6 +53,8 @@ export const translations = {
     importData: "Імпортувати дані",
     noDecksFound: "Списків не знайдено",
     learnedOfWords: "з {total} слів",
+    pinnDeck: "Закріпити список",
+    unpinnDeck: "Відкріпити список",
 
     // Study Header
     cardCount: "Картка {current} з {total}",
@@ -192,7 +194,7 @@ export const translations = {
   en: {
     // General / App
     appName: "German Flashcards",
-    appSubtitle: "Learn and review German vocabulary",
+    appSubtitle: "Learn German vocabulary",
     uiLanguage: "Interface Language",
     themeDark: "Dark Mode",
     themeLight: "Light Mode",
@@ -208,6 +210,8 @@ export const translations = {
     importData: "Import Data",
     noDecksFound: "No decks found",
     learnedOfWords: "of {total} words",
+    pinnDeck: "Pinn the deck",
+    unpinnDeck: "Unpinn the deck",
 
     // Study Header
     cardCount: "Card {current} of {total}",
@@ -300,6 +304,7 @@ export const translations = {
     masteryRate: "Mastery Rate",
     progressByDeck: "Progress by Deck",
     closeBtn: "Got it",
+    wordsCountSuffix: "words",
 
     // Notifications & Confirmations
     deckUnpinned: "Deck unpinned",
@@ -324,7 +329,7 @@ export const translations = {
   de: {
     // General / App
     appName: "Deutsch Karten",
-    appSubtitle: "Deutsche Vokabeln lernen und wiederholen",
+    appSubtitle: "Deutsche Vokabeln lernen",
     uiLanguage: "Sprache der Benutzeroberfläche",
     themeDark: "Dunkelmodus",
     themeLight: "Hellmodus",
@@ -340,6 +345,8 @@ export const translations = {
     importData: "Daten importieren",
     noDecksFound: "Keine Stapel gefunden",
     learnedOfWords: "von {total} Wörtern",
+    pinnDeck: "Stapel fixieren",
+    unpinnDeck: "Stapel anzeigen",
 
     // Study Header
     cardCount: "Karte {current} von {total}",
@@ -433,6 +440,7 @@ export const translations = {
     masteryRate: "Erfolgsquote",
     progressByDeck: "Fortschritt pro Stapel",
     closeBtn: "Verstanden",
+    wordsCountSuffix: "wörter",
 
     // Notifications & Confirmations
     deckUnpinned: "Stapel losgelöst",
