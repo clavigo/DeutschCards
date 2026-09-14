@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  CheckCircle2,
-  XCircle,
-  ArrowRight,
-  Volume2,
-  Sparkles,
-  RefreshCw,
-} from "lucide-react";
+import { CheckCircle2, XCircle, ArrowRight, Sparkles } from "lucide-react";
 import { Flashcard } from "../types";
-import { speakGerman } from "../utils/speech";
 import {
   Language,
   getTranslation,
   getLocalizedText,
 } from "../utils/translations";
+import { createClozeSentence } from "../utils/cloze";
 import confetti from "canvas-confetti";
 
 interface StudyModeQuizProps {
@@ -40,6 +33,8 @@ export const StudyModeQuiz: React.FC<StudyModeQuizProps> = ({
   const [isCorrect, setIsCorrect] = useState(false);
   const [options, setOptions] = useState<string[]>([]);
   const [quizType, setQuizType] = useState<"multiple" | "input">("multiple");
+
+  const isGermanUI = uiLanguage === "de";
 
   // Generate 4 options for multiple choice
   useEffect(() => {
@@ -69,19 +64,25 @@ export const StudyModeQuiz: React.FC<StudyModeQuizProps> = ({
     );
   }
 
-  // Отримуємо локалізовані тексти для поточної картки
+  // Локалізація
   const translation = getLocalizedText(currentCard.translation, uiLanguage);
   const exampleTranslation = getLocalizedText(
     currentCard.exampleTranslation,
     uiLanguage,
   );
+  const notes = getLocalizedText(currentCard.notes, uiLanguage);
 
-  // Handle German character insertion
+  // Речення з пропуском для німецького інтерфейсу
+  const clozeSentence = currentCard.exampleGerman
+    ? createClozeSentence(currentCard.exampleGerman, currentCard.german)
+    : null;
+
+  // Вставка німецьких літер
   const handleInsertChar = (char: string) => {
     setTypedAnswer((prev) => prev + char);
   };
 
-  // Check Answer Handler
+  // Валідація Multiple Choice
   const handleCheckMultipleChoice = (option: string) => {
     if (isAnswered) return;
 
@@ -92,7 +93,7 @@ export const StudyModeQuiz: React.FC<StudyModeQuizProps> = ({
       option.trim().toLowerCase() === currentCard.german.trim().toLowerCase();
     setIsCorrect(correct);
 
-    speakGerman(currentCard.german);
+    // speakGerman(currentCard.german);
 
     if (correct) {
       onMarkStatus("known");
@@ -106,6 +107,7 @@ export const StudyModeQuiz: React.FC<StudyModeQuizProps> = ({
     }
   };
 
+  // Валідація тексту
   const handleCheckTypedAnswer = (e: React.FormEvent) => {
     e.preventDefault();
     if (isAnswered || !typedAnswer.trim()) return;
@@ -125,16 +127,8 @@ export const StudyModeQuiz: React.FC<StudyModeQuizProps> = ({
       normalizedInput === normalizedTarget ||
       (targetWithArticle !== null && normalizedInput === targetWithArticle);
 
-    // DevTools
-    console.log("Quiz Check:", {
-      input: normalizedInput,
-      target: normalizedTarget,
-      targetWithArticle,
-      isMatch: correct,
-    });
-
     setIsCorrect(correct);
-    speakGerman(currentCard.german);
+    // speakGerman(currentCard.german);
 
     if (correct) {
       onMarkStatus("known");
@@ -184,11 +178,24 @@ export const StudyModeQuiz: React.FC<StudyModeQuizProps> = ({
       {/* Prompt Card */}
       <div className="text-center py-6 px-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 mb-6 border border-gray-100 dark:border-gray-800">
         <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">
-          {getTranslation(uiLanguage, "howToSayInGerman")}
+          {isGermanUI
+            ? clozeSentence
+              ? "Ergänze den Satz"
+              : "Welches Wort passt?"
+            : getTranslation(uiLanguage, "howToSayInGerman")}
         </span>
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
-          {translation}
-        </h2>
+
+        {/* Якщо DE — показуємо речення з пропуском. Якщо UA/EN — показуємо переклад */}
+        {isGermanUI ? (
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 italic leading-relaxed">
+            {clozeSentence ? `"${clozeSentence}"` : notes || currentCard.german}
+          </h2>
+        ) : (
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
+            {translation}
+          </h2>
+        )}
+
         {currentCard.preposition && (
           <p className="text-xs font-medium text-purple-600 dark:text-purple-400 mt-2">
             💡 {getTranslation(uiLanguage, "prepositionHintLabel")} "
@@ -258,7 +265,7 @@ export const StudyModeQuiz: React.FC<StudyModeQuizProps> = ({
             />
           </div>
 
-          {/* German Umlaut Quick Insertion Bar */}
+          {/* German Umlauts */}
           {!isAnswered && (
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-400">
@@ -289,7 +296,7 @@ export const StudyModeQuiz: React.FC<StudyModeQuizProps> = ({
         </form>
       )}
 
-      {/* Answer Feedback & Explanation */}
+      {/* Answer Feedback */}
       {isAnswered && (
         <div className="space-y-4 pt-2">
           <div
@@ -323,7 +330,10 @@ export const StudyModeQuiz: React.FC<StudyModeQuizProps> = ({
 
             {currentCard.exampleGerman && (
               <p className="text-xs text-gray-600 dark:text-gray-300 mt-2 italic">
-                "{currentCard.exampleGerman}" ({exampleTranslation})
+                "{currentCard.exampleGerman}"
+                {!isGermanUI &&
+                  exampleTranslation &&
+                  ` (${exampleTranslation})`}
               </p>
             )}
           </div>

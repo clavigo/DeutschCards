@@ -85,8 +85,6 @@ export const FlashcardFront: React.FC<FlashcardFrontProps> = ({
   // Для колоди іменників ховаємо артикль спереду, щоб користувач його згадував
   const showArticleOnFront = deckType !== "nouns";
 
-  console.log(deckType);
-
   return (
     <div
       className={`absolute inset-0 w-full h-full rounded-3xl p-6 sm:p-8 flex flex-col justify-between backface-hidden overflow-hidden ${
