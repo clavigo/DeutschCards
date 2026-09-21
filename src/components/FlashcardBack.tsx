@@ -30,7 +30,7 @@ export const FlashcardBack: React.FC<FlashcardFaceProps> = ({
 }) => {
   return (
     <div
-      className={`absolute inset-0 w-full h-full rounded-3xl p-6 sm:p-8 flex flex-col justify-between rotate-y-180 backface-hidden overflow-hidden ${
+      className={`absolute inset-0 w-full h-full rounded-3xl p-4 lg:p-8 flex flex-col justify-between rotate-y-180 backface-hidden overflow-hidden ${
         isDarkMode
           ? "bg-gradient-to-br from-[#1e1f20] to-[#252729] text-gray-100"
           : "bg-gradient-to-br from-white to-blue-50/40 text-gray-800"

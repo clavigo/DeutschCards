@@ -100,7 +100,7 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
 
   return (
     <div
-      className={`min-h-screen flex flex-col md:flex-row font-sans transition-colors duration-300 ${
+      className={`min-h-screen flex flex-col lg:flex-row font-sans transition-colors duration-300 ${
         isDarkMode ? "bg-[#131314] text-gray-100" : "bg-[#f8f9fa] text-gray-900"
       }`}
     >

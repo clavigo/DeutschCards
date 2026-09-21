@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { motion, AnimatePresence, Transition } from "motion/react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Deck } from "../types";
 import { calculateDeckStats } from "../utils/storage";
@@ -85,26 +86,42 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <div className="h-px bg-gray-200/70 dark:bg-gray-800/70 mx-3 my-3" />
   );
 
+  const animConfig: Transition = { duration: 0.3, ease: "easeInOut" };
+
   return (
     <>
-      {/* Mobile Backdrop */}
+      {/* Mobile Backdrop
       {isOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-xs transition-opacity"
+          className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-xs transition-opacity"
           onClick={onToggleSidebar}
         />
-      )}
+      )} */}
+
+      {/* Mobile Backdrop */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={animConfig} // <-- ДОДАНО ПЛАВНІСТЬ ТУТ
+            className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-xs"
+            onClick={onToggleSidebar}
+          />
+        )}
+      </AnimatePresence>
 
       <aside
         id="sidebar-container"
-        className={`fixed md:static top-0 left-0 bottom-0 z-50 flex flex-col transition-all duration-300 ease-in-out border-r ${
+        className={`fixed lg:static top-0 left-0 bottom-0 z-50 flex flex-col transition-all duration-300 ease-in-out border-r ${
           isDarkMode
             ? "bg-[#131314] text-gray-200 border-gray-800"
             : "bg-[#f8f9fa] text-gray-800 border-gray-200"
         } ${
           isOpen
             ? "w-72 translate-x-0"
-            : "-translate-x-full md:translate-x-0 md:w-15"
+            : "-translate-x-full md:translate-x-0 lg:w-15"
         }`}
       >
         {/* Header / Logo & Toggle */}
@@ -128,7 +145,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
               <button
                 onClick={onToggleSidebar}
-                className="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors hidden md:flex"
+                className="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors hidden lg:flex"
                 title="Згорнути панель"
               >
                 <ChevronLeft className="w-5 h-5" />
