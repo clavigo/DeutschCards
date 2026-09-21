@@ -330,7 +330,7 @@ export const translations = {
     // General / App
     appName: "Deutsch Karten",
     appSubtitle: "Deutsche Vokabeln lernen",
-    uiLanguage: "Sprache der Benutzeroberfläche",
+    uiLanguage: "Sprache",
     themeDark: "Dunkelmodus",
     themeLight: "Hellmodus",
 

@@ -119,14 +119,14 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
             <RotateCcw className="w-4 h-4" />
           </button>
 
-          <button
+          {/* <button
             id="edit-deck-btn"
             onClick={onEditDeck}
             className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
             title={getTranslation(uiLanguage, "editDeck")}
           >
             <Edit3 className="w-4 h-4" />
-          </button>
+          </button> */}
 
           {!deck.isPublic && (
             <button
