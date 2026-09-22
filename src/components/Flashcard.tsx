@@ -126,7 +126,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
       </div>
 
       {/* Control Action Pills */}
-      <div className="flex items-center justify-between w-full max-w-md gap-3">
+      <div className="flex items-stretch justify-between w-full max-w-md gap-3">
         <button
           id="mark-learning-btn"
           onClick={() => {
@@ -135,8 +135,10 @@ export const Flashcard: React.FC<FlashcardProps> = ({
           }}
           className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/80 font-medium text-xs sm:text-sm shadow-xs transition-all transform active:scale-95"
         >
-          <XCircle className="w-4 h-4 text-rose-500" />
-          <span>{getTranslation(uiLanguage, "stillLearning")}</span>
+          <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
+          <span className="text-center">
+            {getTranslation(uiLanguage, "stillLearning")}
+          </span>
         </button>
 
         <button
@@ -147,8 +149,10 @@ export const Flashcard: React.FC<FlashcardProps> = ({
           }}
           className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 font-medium text-xs sm:text-sm shadow-xs transition-all transform active:scale-95"
         >
-          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-          <span>{getTranslation(uiLanguage, "iKnowThis")}</span>
+          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+          <span className="text-center">
+            {getTranslation(uiLanguage, "iKnowThis")}
+          </span>
         </button>
       </div>
     </div>

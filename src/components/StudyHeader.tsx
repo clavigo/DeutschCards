@@ -57,28 +57,32 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
 
   return (
     <header className="w-full flex flex-col gap-4 mb-4">
-      {/* Top Deck Info Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
+      {/* Головний контейнер: flex-col на мобільних (щоб кнопки впали вниз), flex-row на md */}
+      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+        {/* ЛІВА ГРУПА: Гамбургер + Іконка + Текст */}
+        <div className="flex items-start md:items-center gap-3 flex-1 min-w-0">
           <button
             id="mobile-sidebar-toggle"
             onClick={onToggleSidebar}
-            className="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors md:hidden"
+            className="md:hidden p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors shrink-0 mt-0.5"
             title="Open Decks"
           >
             <Menu className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center gap-2.5">
-            <span className="text-2xl">{deck.icon || "📘"}</span>
-            <div>
+          <div className="flex items-start md:items-center gap-2.5 flex-1 min-w-0">
+            <span className="text-2xl shrink-0 mt-0.5 md:mt-0">
+              {deck.icon || "📘"}
+            </span>
+
+            <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 truncate">
                   {deck.title}
                 </h1>
                 <button
                   onClick={onTogglePin}
-                  className={`p-1 rounded-lg transition-colors ${
+                  className={`p-1 rounded-lg transition-colors shrink-0 ${
                     isPinned
                       ? "text-amber-500 fill-amber-500"
                       : "text-gray-400 hover:text-amber-500"
@@ -92,51 +96,54 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
                   <Pin className="w-4 h-4" />
                 </button>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">
+
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 md:mt-0.5 break-words md:line-clamp-1">
                 {deck.description}
               </p>
             </div>
           </div>
-        </div>
 
-        {/* Deck Management Actions */}
-        <div className="flex items-center gap-1.5 self-end sm:self-auto">
-          <button
-            id="shuffle-deck-btn"
-            onClick={onShuffle}
-            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
-            title={getTranslation(uiLanguage, "shuffle")}
-          >
-            <Shuffle className="w-4 h-4" />
-          </button>
+          {/* ПРАВА ГРУПА: Кнопки управління */}
+          <div className="flex items-center gap-1.5 self-end md:self-auto shrink-0">
+            <button
+              id="shuffle-deck-btn"
+              onClick={onShuffle}
+              className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
+              title={getTranslation(uiLanguage, "shuffle")}
+            >
+              <Shuffle className="w-4 h-4" />
+            </button>
 
-          <button
-            id="reset-progress-btn"
-            onClick={onResetProgress}
-            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
-            title={getTranslation(uiLanguage, "resetProgress")}
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
-
-          {/* <button
-            id="edit-deck-btn"
-            onClick={onEditDeck}
-            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
-            title={getTranslation(uiLanguage, "editDeck")}
-          >
-            <Edit3 className="w-4 h-4" />
-          </button> */}
+            <button
+              id="reset-progress-btn"
+              onClick={onResetProgress}
+              className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
+              title={getTranslation(uiLanguage, "resetProgress")}
+            >
+              <RotateCcw className="w-4 h-4" />
+            </button>
+          </div>
 
           {!deck.isPublic && (
-            <button
-              id="delete-deck-btn"
-              onClick={onDeleteDeck}
-              className="p-2 rounded-xl hover:bg-rose-100 dark:hover:bg-rose-950/60 text-rose-600 transition-colors"
-              title={getTranslation(uiLanguage, "deleteDeck")}
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+            <>
+              <button
+                id="edit-deck-btn"
+                onClick={onEditDeck}
+                className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
+                title={getTranslation(uiLanguage, "editDeck")}
+              >
+                <Edit3 className="w-4 h-4" />
+              </button>
+
+              <button
+                id="delete-deck-btn"
+                onClick={onDeleteDeck}
+                className="p-2 rounded-xl hover:bg-rose-100 dark:hover:bg-rose-950/60 text-rose-600 transition-colors"
+                title={getTranslation(uiLanguage, "deleteDeck")}
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </>
           )}
         </div>
       </div>

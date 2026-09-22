@@ -87,7 +87,7 @@ export const FlashcardFront: React.FC<FlashcardFrontProps> = ({
 
   return (
     <div
-      className={`absolute inset-0 w-full h-full rounded-3xl p-4 lg:p-8 flex flex-col justify-between backface-hidden overflow-hidden ${
+      className={`absolute inset-0 w-full h-full rounded-3xl p-4 md:p-8 flex flex-col justify-between backface-hidden overflow-hidden ${
         isDarkMode ? "bg-[#1e1f20] text-gray-100" : "bg-white text-gray-800"
       }`}
     >

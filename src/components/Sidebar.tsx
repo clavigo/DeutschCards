@@ -98,14 +98,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
         />
       )} */}
 
-      {/* Mobile Backdrop */}
+      {/* Mobile & Tablet Backdrop */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={animConfig} // <-- ДОДАНО ПЛАВНІСТЬ ТУТ
+            transition={animConfig}
+            // Змінюємо на lg:hidden, щоб затемнення було і на мобілках, і на планшетах
             className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-xs"
             onClick={onToggleSidebar}
           />
@@ -114,6 +115,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       <aside
         id="sidebar-container"
+        // fixed для мобілок/планшетів, lg:static для ПК
         className={`fixed lg:static top-0 left-0 bottom-0 z-50 flex flex-col transition-all duration-300 ease-in-out border-r ${
           isDarkMode
             ? "bg-[#131314] text-gray-200 border-gray-800"
@@ -121,7 +123,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         } ${
           isOpen
             ? "w-72 translate-x-0"
-            : "-translate-x-full md:translate-x-0 lg:w-15"
+            : // На мобілках ховаємо повністю, на md (планшети) залишаємо вузьку панель (w-16)
+              "-translate-x-full md:translate-x-0 md:w-16"
         }`}
       >
         {/* Header / Logo & Toggle */}
@@ -143,9 +146,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </span>
                 </div>
               </div>
+
               <button
                 onClick={onToggleSidebar}
-                className="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors hidden lg:flex"
+                // На планшетах (md) ми теж хочемо бачити кнопку згортання!
+                className="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors hidden md:flex"
                 title="Згорнути панель"
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -154,6 +159,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ) : (
             <button
               onClick={onToggleSidebar}
+              // Кнопка розгортання на планшетах (md)
               className="p-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-all hidden md:flex"
               title="Розгорнути панель"
             >
