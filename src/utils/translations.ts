@@ -82,7 +82,7 @@ export const translations = {
     plural: "Множина:",
     preposition: "Прийменник / Керування:",
     example: "Приклад:",
-    stillLearning: "Ще вчу (Повторити)",
+    stillLearning: "Ще вчу",
     iKnowThis: "Знаю!",
     keyboardShortcutsHint:
       "Стрілки ◄ ► — картки, ▲ ▼ — статус, Пробіл — перевернути",
@@ -239,7 +239,7 @@ export const translations = {
     plural: "Plural:",
     preposition: "Preposition / Case:",
     example: "Example:",
-    stillLearning: "Still learning (Repeat)",
+    stillLearning: "Still learning",
     iKnowThis: "I know this!",
     keyboardShortcutsHint:
       "Arrows ◄ ► for cards, ▲ ▼ for status, Space to flip",
@@ -374,7 +374,7 @@ export const translations = {
     plural: "Plural:",
     preposition: "Präposition / Rektion:",
     example: "Beispiel:",
-    stillLearning: "Noch lernen (Wiederholen)",
+    stillLearning: "Noch lernen",
     iKnowThis: "Ich weiß es!",
     keyboardShortcutsHint:
       "Pfeiltasten ◄ ► für Karten, ▲ ▼ für Status, Leertaste zum Umdrehen",
