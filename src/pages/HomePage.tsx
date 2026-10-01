@@ -136,7 +136,7 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
       />
 
       {/* Main Central Content Area */}
-      <main className="flex-1 flex flex-col md:pl-24 lg:pl-8 min-w-0 max-w-5xl mx-auto px-4 py-6 sm:px-8 overflow-x-hidden">
+      <main className="flex-1 flex flex-col md:pl-24 lg:pl-8 min-w-0 max-w-5xl sm:mx-auto px-4 py-6 sm:px-8 overflow-x-hidden">
         {activeDeck ? (
           <>
             {/* Study Header & Mode Selectors */}
