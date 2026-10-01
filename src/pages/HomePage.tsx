@@ -1,3 +1,4 @@
+// src/pages/HomePage.tsx
 import { useState, useEffect } from "react";
 import { calculateDeckStats, exportDataAsJSON } from "../utils/storage";
 import { Deck } from "../types";
@@ -23,10 +24,8 @@ interface HomePageProps {
 }
 
 export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
-  // UI Language State
   const [uiLanguage, setUiLanguage] = useState<Language>("uk");
 
-  // UI state
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [isEditorOpen, setIsEditorOpen] = useState<boolean>(false);
   const [deckToEdit, setDeckToEdit] = useState<Deck | null>(null);
@@ -46,17 +45,24 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
     setProgressMap,
     handleImportFile,
     handleResetProgress,
-  } = useDecks({ uiLanguage, onDeckReset: () => setCurrentCardIndex(0) });
+  } = useDecks({
+    uiLanguage,
+    onDeckReset: () => setCurrentCardIndex(0),
+  });
 
   const {
     currentCards,
     currentCardIndex,
     studyMode,
+    isFlipped,
+    setIsFlipped,
     setCurrentCards,
     setCurrentCardIndex,
     setStudyMode,
     handleNextCard,
     handlePrevCard,
+    handleNextCardWithFlip,
+    handlePrevCardWithFlip,
     handleShuffleCards,
     handleMarkStatus,
     handleToggleStar,
@@ -67,33 +73,34 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
     setProgressMap,
   });
 
-  // Set card stack when active deck changes
+  // Завантаження карток при зміні колоди
   useEffect(() => {
     if (activeDeck && activeDeck.cards) {
       setCurrentCards(activeDeck.cards);
       setCurrentCardIndex(0);
+      setIsFlipped(false);
     } else {
       setCurrentCards([]);
       setCurrentCardIndex(0);
+      setIsFlipped(false);
     }
   }, [activeDeckId, decks]);
 
-  // Підключаємо наш кастомний хук для клавіатури
+  // Гарячі клавіші тепер теж плавно перевертають картку назад без спойлерів
   useKeyboardShortcuts({
-    onNext: handleNextCard,
-    onPrev: handlePrevCard,
-    onMarkKnown: () => handleMarkStatus("known"),
-    onMarkLearning: () => handleMarkStatus("learning"),
+    onNext: handleNextCardWithFlip,
+    onPrev: handlePrevCardWithFlip,
+    onMarkKnown: () => handleNextCardWithFlip(() => handleMarkStatus("known")),
+    onMarkLearning: () =>
+      handleNextCardWithFlip(() => handleMarkStatus("learning")),
     isDisabled: isEditorOpen || isStatsOpen,
   });
 
-  // Active card
   const currentCard = currentCards[currentCardIndex];
   const cardKey =
     activeDeck && currentCard ? `${activeDeck.id}_${currentCard.id}` : "";
   const currentProgress = progressMap[cardKey];
 
-  // Stats calculation for current deck
   const stats = activeDeck
     ? calculateDeckStats(activeDeck, progressMap)
     : { total: 0, known: 0, learning: 0, unseen: 0, percentage: 0 };
@@ -104,7 +111,6 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
         isDarkMode ? "bg-[#131314] text-gray-100" : "bg-[#f8f9fa] text-gray-900"
       }`}
     >
-      {/* Toast Notification Floating Pill */}
       {toastMessage && (
         <div className="fixed top-5 right-5 z-50 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 shadow-xl text-xs font-medium border border-gray-700/50 animate-bounce">
           <Sparkles className="w-4 h-4 text-amber-400" />
@@ -112,7 +118,6 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
         </div>
       )}
 
-      {/* Left Sidebar (Google Gemini Styled) */}
       <Sidebar
         decks={decks}
         activeDeckId={activeDeckId}
@@ -128,18 +133,16 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
           setDeckToEdit(null);
           setIsEditorOpen(true);
         }}
-        onToggleTheme={() => onToggleTheme()}
+        onToggleTheme={onToggleTheme}
         onOpenStats={() => setIsStatsOpen(true)}
         onExportData={exportDataAsJSON}
         onImportData={handleImportFile}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
 
-      {/* Main Central Content Area */}
       <main className="flex-1 flex flex-col md:pl-24 lg:pl-8 min-w-0 max-w-5xl sm:mx-auto px-4 py-6 sm:px-8 overflow-x-hidden">
         {activeDeck ? (
           <>
-            {/* Study Header & Mode Selectors */}
             <StudyHeader
               deck={activeDeck}
               currentCardIndex={currentCardIndex}
@@ -162,10 +165,8 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
               onDeleteDeck={handleDeleteDeck}
             />
 
-            {/* Flashcard Canvas or Interactive Quiz View */}
             <div className="flex-1 flex flex-col items-center justify-center my-auto">
               {currentCards.length === 0 ? (
-                /* Empty deck placeholder */
                 <div className="text-center py-12 px-6 rounded-3xl border border-dashed border-gray-300 dark:border-gray-800 my-8">
                   <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                   <h3 className="text-lg font-bold">
@@ -186,7 +187,6 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
                   </button>
                 </div>
               ) : studyMode === "quiz" ? (
-                /* Interactive Quiz / Practice View */
                 <StudyModeQuiz
                   cards={currentCards}
                   currentCardIndex={currentCardIndex}
@@ -196,7 +196,6 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
                   onNext={handleNextCard}
                 />
               ) : currentCard ? (
-                /* Interactive 3D Flashcard View */
                 <FlashcardComponent
                   card={currentCard}
                   mode={studyMode}
@@ -205,21 +204,21 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
                   isStarred={currentProgress?.starred || false}
                   isDarkMode={isDarkMode}
                   uiLanguage={uiLanguage}
+                  isFlipped={isFlipped}
+                  onToggleFlip={() => setIsFlipped((prev) => !prev)}
                   onMarkStatus={handleMarkStatus}
                   onToggleStar={handleToggleStar}
-                  onNext={handleNextCard}
-                  onPrev={handlePrevCard}
+                  onNextWithFlip={handleNextCardWithFlip}
+                  onPrevWithFlip={handlePrevCardWithFlip}
                 />
               ) : null}
 
               {/* Navigation Controls Bar */}
               {currentCards.length > 0 && studyMode !== "quiz" && (
-                // 1. Замінили flex на grid, додали grid-cols-[1fr_auto_1fr] та обмежили максимальну ширину (max-w-md mx-auto)
                 <div className="grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-xs mx-auto gap-4 mt-2 mb-6 px-4 sm:px-0">
                   <button
                     id="prev-card-btn"
-                    onClick={handlePrevCard}
-                    // 2. Додали w-full та justify-center (прибрали різні px-4 / px-5, бо тепер ширина фіксується грiдом)
+                    onClick={() => handlePrevCardWithFlip()}
                     className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-2xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 font-medium text-xs shadow-xs transition-all"
                   >
                     <ChevronLeft className="w-4 h-4 shrink-0" />
@@ -234,8 +233,7 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
 
                   <button
                     id="next-card-btn"
-                    onClick={handleNextCard}
-                    // 2. Додали w-full та justify-center
+                    onClick={() => handleNextCardWithFlip()}
                     className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold text-xs shadow-md transition-all"
                   >
                     <span className="truncate">
@@ -248,7 +246,6 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
             </div>
           </>
         ) : (
-          /* Fallback when no deck selected */
           <div className="text-center py-20">
             <h2 className="text-xl font-bold">
               {getTranslation(uiLanguage, "selectDeckPlaceholder")}
@@ -257,7 +254,6 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
         )}
       </main>
 
-      {/* Modals */}
       {isEditorOpen && (
         <DeckEditorModal
           deckToEdit={deckToEdit}
