@@ -423,7 +423,7 @@ export const DeckEditorModal: React.FC<DeckEditorModalProps> = ({
                               {c.german}
                             </span>
                             {c.preposition && (
-                              <span className="ml-1.5 text-[10px] font-semibold text-purple-600 bg-purple-50 dark:bg-purple-950 px-1.5 py-0.5 rounded-md">
+                              <span className="ml-1.5 text-xs font-semibold text-purple-600 bg-purple-50 dark:bg-purple-950 px-1.5 py-0.5 rounded-md">
                                 {c.preposition}
                               </span>
                             )}
@@ -462,7 +462,7 @@ export const DeckEditorModal: React.FC<DeckEditorModalProps> = ({
               <div className="space-y-3">
                 <p className="text-xs text-gray-500">
                   {getTranslation(uiLanguage, 'bulkImportInstructions')}: <br />
-                  <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-[11px] font-mono">
+                  <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-xs font-mono">
                     word - translation - preposition - example
                   </code>
                 </p>

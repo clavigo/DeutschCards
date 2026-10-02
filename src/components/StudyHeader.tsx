@@ -74,7 +74,7 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
   return (
     <header className="w-full flex flex-col gap-4 mb-4">
       {/* Головний контейнер: flex-col на мобільних, flex-row на md */}
-      <div className="flex flex-col md:flex-row justify-between gap-3 md:gap-4 md:items-center">
+      <div className="flex flex-col md:flex-row justify-between gap-3 md:gap-4">
         {/* ЛІВА ГРУПА: Гамбургер + Іконка + Текст + Опис */}
         <div className="flex flex-col gap-1 md:gap-0 flex-1 min-w-0">
           <div className="flex items-center gap-2.5 w-full">
@@ -89,74 +89,58 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
 
             <span className="text-2xl shrink-0">{deck.icon || "📘"}</span>
 
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 truncate min-w-0 flex-1 md:flex-none">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 truncate min-w-0 flex-1">
               {deck.title}
             </h1>
 
-            <button
-              onClick={onTogglePin}
-              className={`p-1 rounded-lg transition-colors shrink-0 ${
-                isPinned
-                  ? "text-amber-500 fill-amber-500"
-                  : "text-gray-400 hover:text-amber-500"
-              }`}
-              title={
-                isPinned
-                  ? getTranslation(uiLanguage, "deckUnpinned")
-                  : getTranslation(uiLanguage, "deckPinned")
-              }
-            >
-              <Pin className="w-4 h-4" />
-            </button>
+            {/* Кнопки управління */}
+            <div className="flex items-center gap-1.5 self-end shrink-0">
+              <button
+                id="shuffle-deck-btn"
+                onClick={onShuffle}
+                className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
+                title={getTranslation(uiLanguage, "shuffle")}
+              >
+                <Shuffle className="w-4 h-4" />
+              </button>
+
+              <button
+                id="reset-progress-btn"
+                onClick={onResetProgress}
+                className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
+                title={getTranslation(uiLanguage, "resetProgress")}
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+
+              {!deck.isPublic && (
+                <>
+                  <button
+                    id="edit-deck-btn"
+                    onClick={onEditDeck}
+                    className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
+                    title={getTranslation(uiLanguage, "editDeck")}
+                  >
+                    <Edit3 className="w-4 h-4" />
+                  </button>
+
+                  <button
+                    id="delete-deck-btn"
+                    onClick={onDeleteDeck}
+                    className="p-2 rounded-xl hover:bg-rose-100 dark:hover:bg-rose-950/60 text-rose-600 transition-colors"
+                    title={getTranslation(uiLanguage, "deleteDeck")}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Опис: приховано на мобілках (hidden), показано на md і вище (md:block) */}
           <p className="hidden md:block text-xs text-gray-500 dark:text-gray-400 mt-1 break-words line-clamp-1 w-full">
             {deck.description}
           </p>
-        </div>
-
-        {/* ПРАВА ГРУПА НА ПК / ЛІВА ГРУПА НА МОБІЛЬНОМУ: Кнопки управління */}
-        <div className="flex items-center gap-1.5 self-end shrink-0">
-          <button
-            id="shuffle-deck-btn"
-            onClick={onShuffle}
-            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
-            title={getTranslation(uiLanguage, "shuffle")}
-          >
-            <Shuffle className="w-4 h-4" />
-          </button>
-
-          <button
-            id="reset-progress-btn"
-            onClick={onResetProgress}
-            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
-            title={getTranslation(uiLanguage, "resetProgress")}
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
-
-          {!deck.isPublic && (
-            <>
-              <button
-                id="edit-deck-btn"
-                onClick={onEditDeck}
-                className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-colors"
-                title={getTranslation(uiLanguage, "editDeck")}
-              >
-                <Edit3 className="w-4 h-4" />
-              </button>
-
-              <button
-                id="delete-deck-btn"
-                onClick={onDeleteDeck}
-                className="p-2 rounded-xl hover:bg-rose-100 dark:hover:bg-rose-950/60 text-rose-600 transition-colors"
-                title={getTranslation(uiLanguage, "deleteDeck")}
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </>
-          )}
         </div>
       </div>
 

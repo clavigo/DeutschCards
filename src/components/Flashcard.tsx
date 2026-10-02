@@ -14,7 +14,7 @@ import {
   getLocalizedText,
 } from "../utils/translations";
 
-export const ANIMATION_DURATION = 0.5;
+export const ANIMATION_DURATION = 0.45;
 
 interface FlashcardProps {
   card: FlashcardType;
@@ -87,25 +87,31 @@ export const Flashcard: React.FC<FlashcardProps> = ({
   };
 
   return (
-    <div className="w-full max-w-[340px] sm:max-w-md md:max-w-2xl mx-auto flex flex-col items-center gap-4 sm:gap-6 my-2 sm:my-4 px-2">
+    <div className="w-full max-w-[340px] sm:max-w-xl md:max-w-2xl mx-auto flex flex-col items-center gap-4 sm:gap-6 my-2 sm:my-4 px-2">
       {/* Interactive 3D Card Container */}
       <div className="relative w-full h-[420px] sm:h-auto sm:aspect-[16/9] sm:min-h-[300px]">
         {/* Shadow Layers */}
-        <div className="absolute inset-0 translate-y-2 scale-[0.97] rounded-3xl bg-gray-200/60 dark:bg-gray-800/40 border border-gray-300/40 dark:border-gray-700/30 transition-all duration-300 pointer-events-none" />
-        <div className="absolute inset-0 translate-y-1 scale-[0.985] rounded-3xl bg-gray-100/80 dark:bg-gray-800/70 border border-gray-200/60 dark:border-gray-700/50 transition-all duration-300 pointer-events-none" />
+        <div className="absolute inset-0 translate-y-2 scale-[0.97] rounded-3xl bg-gray-200/60 dark:bg-gray-800/40 border border-gray-300/40 dark:border-gray-700/30 pointer-events-none" />
+        <div className="absolute inset-0 translate-y-1 scale-[0.985] rounded-3xl bg-gray-100/80 dark:bg-gray-800/70 border border-gray-200/60 dark:border-gray-700/50 pointer-events-none" />
 
         <div
           id="flashcard-container"
           onClick={onToggleFlip}
-          className="relative w-full h-full perspective-1000 cursor-pointer group select-none"
+          className="relative w-full h-full cursor-pointer select-none"
+          style={{ perspective: 1200 }}
         >
           <motion.div
-            className={`relative w-full h-full rounded-3xl transition-all duration-500 transform-style-3d border ${
+            className={`relative w-full h-full rounded-3xl border ${
               isDarkMode ? "sleek-dark-shadow" : "sleek-card-shadow"
             }`}
             animate={{ rotateY: isFlipped ? 180 : 0 }}
-            transition={{ duration: ANIMATION_DURATION, ease: "easeInOut" }}
+            transition={{
+              duration: ANIMATION_DURATION,
+              ease: [0.4, 0, 0.2, 1],
+            }}
             style={{
+              transformStyle: "preserve-3d",
+              willChange: "transform",
               borderColor: isDarkMode
                 ? "rgba(255,255,255,0.1)"
                 : "rgba(0,0,0,0.08)",
@@ -128,7 +134,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
         <button
           id="mark-learning-btn"
           onClick={() => onNextWithFlip(() => onMarkStatus("learning"))}
-          className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-3 px-2 sm:px-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/80 font-medium text-xs sm:text-sm shadow-xs transition-all transform active:scale-95"
+          className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-3 px-2 sm:px-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/80 font-medium text-xs sm:text-sm shadow-xs transition-transform active:scale-95"
         >
           <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
           <span className="text-center">
@@ -139,7 +145,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
         <button
           id="mark-known-btn"
           onClick={() => onNextWithFlip(() => onMarkStatus("known"))}
-          className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-3 px-2 sm:px-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 font-medium text-xs sm:text-sm shadow-xs transition-all transform active:scale-95"
+          className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-3 px-2 sm:px-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 font-medium text-xs sm:text-sm shadow-xs transition-transform active:scale-95"
         >
           <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
           <span className="text-center">

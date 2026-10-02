@@ -75,7 +75,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({
               <span className="text-2xl sm:text-3xl font-extrabold text-emerald-700 dark:text-emerald-300">
                 {totalKnown}
               </span>
-              <span className="text-[10px] text-emerald-500 block">{getTranslation(uiLanguage, 'wordsCountSuffix')}</span>
+              <span className="text-xs text-emerald-500 block">{getTranslation(uiLanguage, 'wordsCountSuffix')}</span>
             </div>
 
             <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/80 text-center">
@@ -85,7 +85,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({
               <span className="text-2xl sm:text-3xl font-extrabold text-amber-700 dark:text-amber-300">
                 {totalLearning}
               </span>
-              <span className="text-[10px] text-amber-500 block">{getTranslation(uiLanguage, 'wordsCountSuffix')}</span>
+              <span className="text-xs text-amber-500 block">{getTranslation(uiLanguage, 'wordsCountSuffix')}</span>
             </div>
 
             <div className="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/80 text-center">
@@ -95,7 +95,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({
               <span className="text-2xl sm:text-3xl font-extrabold text-blue-700 dark:text-blue-300">
                 {totalPercentage}%
               </span>
-              <span className="text-[10px] text-blue-500 block">{getTranslation(uiLanguage, 'accuracySuffix')}</span>
+              <span className="text-xs text-blue-500 block">{getTranslation(uiLanguage, 'accuracySuffix')}</span>
             </div>
           </div>
 

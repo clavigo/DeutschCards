@@ -1,5 +1,6 @@
 import React from "react";
 import { Volume2, RotateCw, Star, CheckCircle2 } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { Flashcard as FlashcardType, StudyMode, DeckType } from "../types";
 import { createClozeSentence } from "../utils/cloze";
 import { Language, getTranslation } from "../utils/translations";
@@ -90,6 +91,11 @@ export const FlashcardFront: React.FC<FlashcardFrontProps> = ({
       className={`absolute inset-0 w-full h-full rounded-3xl p-4 md:p-8 flex flex-col justify-between backface-hidden overflow-hidden ${
         isDarkMode ? "bg-[#1e1f20] text-gray-100" : "bg-white text-gray-800"
       }`}
+      style={{
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
+        transform: "translateZ(0)", // Примусовий GPU-шар
+      }}
     >
       {/* Top metadata & audio */}
       <div className="flex items-center justify-between">
@@ -103,7 +109,7 @@ export const FlashcardFront: React.FC<FlashcardFrontProps> = ({
           )}
 
           {status === "known" && (
-            <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full">
+            <span className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full">
               <CheckCircle2 className="w-3 h-3" />{" "}
               {getTranslation(uiLanguage, "learned")}
             </span>
@@ -144,63 +150,74 @@ export const FlashcardFront: React.FC<FlashcardFrontProps> = ({
 
       {/* Center Content depending on mode */}
       <div className="flex flex-col items-center justify-center text-center my-auto space-y-3 px-4">
-        {mode === "reverse" ? (
-          // Reverse Mode
-          <div>
-            <span className="text-xs uppercase tracking-wider text-gray-400 font-medium block mb-2">
-              {isGermanUI
-                ? "Ergänze den Satz"
-                : getTranslation(uiLanguage, "translationLabel")}
-            </span>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={card.id}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="flex flex-col items-center justify-center w-full"
+          >
+            {mode === "reverse" ? (
+              // Reverse Mode
+              <div>
+                <span className="text-xs uppercase tracking-wider text-gray-400 font-medium block mb-2">
+                  {isGermanUI
+                    ? "Ergänze den Satz"
+                    : getTranslation(uiLanguage, "translationLabel")}
+                </span>
 
-            {isGermanUI ? (
-              <div className="space-y-3">
-                {card.exampleGerman ? (
-                  <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 italic leading-relaxed">
-                    "{createClozeSentence(card.exampleGerman, card.german)}"
-                  </h2>
-                ) : (
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
-                    {notes || "Welches Wort passt?"}
-                  </h2>
-                )}
+                {isGermanUI ? (
+                  <div className="space-y-3">
+                    {card.exampleGerman ? (
+                      <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 italic leading-relaxed">
+                        "{createClozeSentence(card.exampleGerman, card.german)}"
+                      </h2>
+                    ) : (
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
+                        {notes || "Welches Wort passt?"}
+                      </h2>
+                    )}
 
-                {card.preposition && (
-                  <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700 dark:bg-purple-950/80 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
-                    💡 Tipp: {card.preposition}
+                    {card.preposition && (
+                      <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700 dark:bg-purple-950/80 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+                        💡 Tipp: {card.preposition}
+                      </div>
+                    )}
                   </div>
+                ) : (
+                  <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                    {translation}
+                  </h2>
                 )}
               </div>
             ) : (
-              <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-                {translation}
-              </h2>
-            )}
-          </div>
-        ) : (
-          // Classic & Grammar Modes: Front shows German word
-          <div>
-            <div className="flex items-center justify-center gap-2 mb-1">
-              {showArticleOnFront && card.article && (
-                <span className="text-xl sm:text-3xl font-serif text-blue-600 dark:text-blue-400 italic">
-                  {card.article}
-                </span>
-              )}
-              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">
-                {card.german}
-              </h2>
-            </div>
+              // Classic & Grammar Modes: Front shows German word
+              <div>
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  {showArticleOnFront && card.article && (
+                    <span className="text-xl sm:text-3xl font-serif text-blue-600 dark:text-blue-400 italic">
+                      {card.article}
+                    </span>
+                  )}
+                  <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">
+                    {card.german}
+                  </h2>
+                </div>
 
-            {showArticleOnFront && card.plural && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                {getTranslation(uiLanguage, "plural")}{" "}
-                <span className="text-blue-600 dark:text-blue-400">
-                  {card.plural}
-                </span>
-              </p>
+                {showArticleOnFront && card.plural && (
+                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                    {getTranslation(uiLanguage, "plural")}{" "}
+                    <span className="text-blue-600 dark:text-blue-400">
+                      {card.plural}
+                    </span>
+                  </p>
+                )}
+              </div>
             )}
-          </div>
-        )}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Bottom flip hint */}

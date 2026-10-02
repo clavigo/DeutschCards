@@ -26,7 +26,7 @@ interface HomePageProps {
 export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
   const [uiLanguage, setUiLanguage] = useState<Language>("uk");
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isEditorOpen, setIsEditorOpen] = useState<boolean>(false);
   const [deckToEdit, setDeckToEdit] = useState<Deck | null>(null);
   const [isStatsOpen, setIsStatsOpen] = useState<boolean>(false);
@@ -215,7 +215,7 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
 
               {/* Navigation Controls Bar */}
               {currentCards.length > 0 && studyMode !== "quiz" && (
-                <div className="grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-xs mx-auto gap-4 mt-2 mb-6 px-4 sm:px-0">
+                <div className="grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-xs mx-auto gap-4 mt-2 sm:px-0">
                   <button
                     id="prev-card-btn"
                     onClick={() => handlePrevCardWithFlip()}

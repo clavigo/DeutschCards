@@ -7,7 +7,7 @@ import { Language, getTranslation } from "../utils/translations";
 import confetti from "canvas-confetti";
 
 export const ANIMATION_DURATION = 0.5;
-export const FLIP_DELAY_MS = ANIMATION_DURATION * 1000 + 200;
+export const FLIP_DELAY_MS = ANIMATION_DURATION * 500;
 
 interface StudySessionProps {
   activeDeck: Deck;
