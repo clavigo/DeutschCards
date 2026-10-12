@@ -107,7 +107,7 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
 
   return (
     <div
-      className={`min-h-screen flex flex-col sm:flex-row font-sans transition-colors duration-300 ${
+      className={`min-h-screen overflow-x-hidden flex flex-col sm:flex-row font-sans transition-colors duration-300 ${
         isDarkMode ? "bg-[#131314] text-gray-100" : "bg-[#f8f9fa] text-gray-900"
       }`}
     >
@@ -165,7 +165,7 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
               onDeleteDeck={handleDeleteDeck}
             />
 
-            <div className="flex-1 flex flex-col items-center justify-center my-auto">
+            <div className="flex-1 flex flex-col items-center justify-center">
               {currentCards.length === 0 ? (
                 <div className="text-center py-12 px-6 rounded-3xl border border-dashed border-gray-300 dark:border-gray-800 my-8">
                   <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-3" />
