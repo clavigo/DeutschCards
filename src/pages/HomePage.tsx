@@ -16,7 +16,12 @@ import {
   BookOpen,
   Plus,
 } from "lucide-react";
-import { useKeyboardShortcuts, useDecks, useStudySession } from "../hooks";
+import {
+  useKeyboardShortcuts,
+  useDecks,
+  useStudySession,
+  useToast,
+} from "../hooks";
 
 interface HomePageProps {
   isDarkMode: boolean;
@@ -30,7 +35,9 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
   const [isEditorOpen, setIsEditorOpen] = useState<boolean>(false);
   const [deckToEdit, setDeckToEdit] = useState<Deck | null>(null);
   const [isStatsOpen, setIsStatsOpen] = useState<boolean>(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  // const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const { toastMessage, showToast } = useToast();
 
   const {
     decks,
@@ -55,10 +62,12 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
     currentCardIndex,
     studyMode,
     isFlipped,
+    isUnseenOnlyMode,
     setIsFlipped,
     setCurrentCards,
     setCurrentCardIndex,
     setStudyMode,
+    toggleUnseenOnlyMode,
     handleNextCard,
     handlePrevCard,
     handleNextCardWithFlip,
@@ -71,20 +80,21 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
     progressMap,
     uiLanguage,
     setProgressMap,
+    showToast,
   });
 
-  // Завантаження карток при зміні колоди
-  useEffect(() => {
-    if (activeDeck && activeDeck.cards) {
-      setCurrentCards(activeDeck.cards);
-      setCurrentCardIndex(0);
-      setIsFlipped(false);
-    } else {
-      setCurrentCards([]);
-      setCurrentCardIndex(0);
-      setIsFlipped(false);
-    }
-  }, [activeDeckId, decks]);
+  // // Завантаження карток при зміні колоди
+  // useEffect(() => {
+  //   if (activeDeck && activeDeck.cards) {
+  //     setCurrentCards(activeDeck.cards);
+  //     setCurrentCardIndex(0);
+  //     setIsFlipped(false);
+  //   } else {
+  //     setCurrentCards([]);
+  //     setCurrentCardIndex(0);
+  //     setIsFlipped(false);
+  //   }
+  // }, [activeDeckId, decks]);
 
   // Гарячі клавіші тепер теж плавно перевертають картку назад без спойлерів
   useKeyboardShortcuts({
@@ -112,7 +122,7 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
       }`}
     >
       {toastMessage && (
-        <div className="fixed top-5 right-5 z-50 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 shadow-xl text-xs font-medium border border-gray-700/50 animate-bounce">
+        <div className="fixed top-5 left-5 z-50 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 shadow-xl text-xs font-medium border border-gray-700/50 animate-bounce">
           <Sparkles className="w-4 h-4 text-amber-400" />
           <span>{toastMessage}</span>
         </div>
@@ -149,6 +159,8 @@ export const HomePage = ({ isDarkMode, onToggleTheme }: HomePageProps) => {
               totalCards={currentCards.length}
               studyMode={studyMode}
               isPinned={pinnedIds.includes(activeDeck.id)}
+              isUnseenOnlyMode={isUnseenOnlyMode}
+              onToggleUnseenOnly={toggleUnseenOnlyMode}
               knownCount={stats.known}
               learningCount={stats.learning}
               isDarkMode={isDarkMode}

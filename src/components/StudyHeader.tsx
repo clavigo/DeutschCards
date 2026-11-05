@@ -3,6 +3,7 @@ import {
   Pin,
   Shuffle,
   RotateCcw,
+  RefreshCw,
   Edit3,
   Trash2,
   Menu,
@@ -11,6 +12,7 @@ import {
   BookOpen,
   HelpCircle,
   CheckCircle2,
+  Filter,
 } from "lucide-react";
 import { Deck, StudyMode } from "../types";
 import { Language, getTranslation } from "../utils/translations";
@@ -21,6 +23,7 @@ interface StudyHeaderProps {
   totalCards: number;
   studyMode: StudyMode;
   isPinned: boolean;
+  isUnseenOnlyMode?: boolean;
   knownCount: number;
   learningCount: number;
   isDarkMode: boolean;
@@ -32,6 +35,7 @@ interface StudyHeaderProps {
   onResetProgress: () => void;
   onEditDeck: () => void;
   onDeleteDeck: () => void;
+  onToggleUnseenOnly?: () => void;
 }
 
 // Допоміжна функція для розділення довгого тексту перекладу на мобільну і десктопну частини
@@ -47,6 +51,7 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
   totalCards,
   studyMode,
   isPinned,
+  isUnseenOnlyMode = false,
   knownCount,
   learningCount,
   isDarkMode,
@@ -58,6 +63,7 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
   onResetProgress,
   onEditDeck,
   onDeleteDeck,
+  onToggleUnseenOnly,
 }) => {
   const percentage =
     totalCards > 0 ? Math.round((knownCount / totalCards) * 100) : 0;
@@ -112,6 +118,23 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
               >
                 <RotateCcw className="w-4 h-4" />
               </button>
+
+              {onToggleUnseenOnly && (
+                <button
+                  id="filter-unseen-btn"
+                  onClick={onToggleUnseenOnly}
+                  className={`p-2 rounded-xl transition-colors box-border ${
+                    isUnseenOnlyMode
+                      ? "bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-400 ring-1 ring-blue-200 dark:ring-blue-800/50 shadow-sm"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 ring-1 ring-transparent"
+                  }`}
+                  title="Повторити лише не вивчені слова"
+                >
+                  <Filter
+                    className={`w-4 h-4 ${isUnseenOnlyMode ? "fill-current/20" : ""}`}
+                  />
+                </button>
+              )}
 
               {!deck.isPublic && (
                 <>
