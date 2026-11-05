@@ -23,7 +23,7 @@ export default function App() {
 
   return (
     <HomePage
-      isDarkMode={isDarkMode}
+      isDarkMode={false}
       onToggleTheme={() => setIsDarkMode((prev) => !prev)}
     />
   );
