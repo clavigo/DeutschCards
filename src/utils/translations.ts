@@ -69,6 +69,9 @@ export const translations = {
     editDeck: "Редагувати",
     deleteDeck: "Видалити",
     stats: "Статистика",
+    modeUnseenOnly: "Тільки невивчені слова",
+    modeAllWords: "Всі слова колоди",
+    allWordsLearned: "Всі слова вже вивчені! 🥳",
 
     // Flashcard
     noun: "іменник",
@@ -226,6 +229,9 @@ export const translations = {
     editDeck: "Edit",
     deleteDeck: "Delete",
     stats: "Statistics",
+    modeUnseenOnly: "Unseen words only",
+    modeAllWords: "All deck words",
+    allWordsLearned: "All words are already learned! 🥳",
 
     // Flashcard
     noun: "noun",
@@ -361,6 +367,9 @@ export const translations = {
     editDeck: "Bearbeiten",
     deleteDeck: "Löschen",
     stats: "Statistik",
+    modeUnseenOnly: "Nur ungelernte Wörter",
+    modeAllWords: "Alle Wörter des Decks",
+    allWordsLearned: "Alle Wörter wurden bereits gelernt! 🥳",
 
     // Flashcard
     noun: "Nomen",
