@@ -12,13 +12,16 @@ export default function App() {
   });
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("deutschcards_theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("deutschcards_theme", "light");
-    }
+    // if (isDarkMode) {
+    //   document.documentElement.classList.add("dark");
+    //   localStorage.setItem("deutschcards_theme", "dark");
+    // } else {
+    //   document.documentElement.classList.remove("dark");
+    //   localStorage.setItem("deutschcards_theme", "light");
+    // }
+
+    document.documentElement.classList.remove("dark");
+    localStorage.setItem("deutschcards_theme", "light");
   }, [isDarkMode]);
 
   return (
